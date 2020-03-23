@@ -63,7 +63,7 @@ def addCEtoSite(siteName, ceName, optionsDict=None):
   if optionsDict is not None:
     for option, optionValue in optionsDict.items():
       csAPI.setOption(cfgPath(gBaseResourcesSection, 'Sites', siteName.split('.')[0],
-			      siteName, 'CEs', ceName, option), optionValue)
+                              siteName, 'CEs', ceName, option), optionValue)
   return csAPI.commit()
 
 
@@ -85,12 +85,12 @@ def addQueueToCE(ceName, queueName, optionsDict=None):
   csAPI = CSAPI()
   # CSAPI.createSection() always returns S_OK even if the section already exists
   csAPI.createSection(cfgPath(gBaseResourcesSection, 'Sites', siteName.split('.')[0],
-			      siteName, 'CEs', ceName, 'Queues', queueName))
+                              siteName, 'CEs', ceName, 'Queues', queueName))
   # add options if requested
   if optionsDict is not None:
     for option, optionValue in optionsDict.items():
       csAPI.setOption(cfgPath(gBaseResourcesSection, 'Sites', siteName.split('.')[0],
-			      siteName, 'CEs', ceName, 'Queues', queueName, option), optionValue)
+                              siteName, 'CEs', ceName, 'Queues', queueName, option), optionValue)
   return csAPI.commit()
 
 
@@ -121,8 +121,8 @@ def getSiteCEMapping():
   sitesCEsMapping = {}
   for site in sites:
     res = sitesCEsMapping[site] = gConfig.getSections(cfgPath(gBaseResourcesSection, 'Sites',
-							      site.split('.')[0], site, 'CEs'),
-						      [])
+                                                              site.split('.')[0], site, 'CEs'),
+                                                      [])
     if not res['OK']:
       return res
     sitesCEsMapping[site] = res['Value']
@@ -144,8 +144,8 @@ def getCESiteMapping(ceName=''):
   for site in sitesCEs:
     for ce in sitesCEs[site]:
       if ceName:
-	if ce != ceName:
-	  continue
+        if ce != ceName:
+          continue
       ceSiteMapping[ce] = site
   return S_OK(ceSiteMapping)
 
@@ -158,10 +158,10 @@ def getGOCSiteName(diracSiteName):
   :returns: S_OK/S_ERROR structure
   """
   gocDBName = gConfig.getValue(cfgPath(gBaseResourcesSection,
-				       'Sites',
-				       diracSiteName.split('.')[0],
-				       diracSiteName,
-				       'Name'))
+                                       'Sites',
+                                       diracSiteName.split('.')[0],
+                                       diracSiteName,
+                                       'Name'))
   if not gocDBName:
     return S_ERROR("No GOC site name for %s in CS (Not a grid site ?)" % diracSiteName)
   return S_OK(gocDBName)
@@ -199,10 +199,10 @@ def getDIRACSiteName(gocSiteName):
   sitesList = res['Value']
 
   tmpList = [(site, gConfig.getValue(cfgPath(gBaseResourcesSection,
-					     'Sites',
-					     site.split('.')[0],
-					     site,
-					     'Name'))) for site in sitesList]
+                                             'Sites',
+                                             site.split('.')[0],
+                                             site,
+                                             'Name'))) for site in sitesList]
 
   diracSites = [dirac for (dirac, goc) in tmpList if goc == gocSiteName]
 
